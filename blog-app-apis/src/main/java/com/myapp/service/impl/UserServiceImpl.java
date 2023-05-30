@@ -5,6 +5,7 @@ import com.myapp.exceptions.ResourceNotFoundException;
 import com.myapp.payload.UserDto;
 import com.myapp.repositories.UserRepo;
 import com.myapp.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private ModelMapper modelMapper;
     @Override
     public UserDto createUser(UserDto userDto) {
 
@@ -55,27 +58,25 @@ public class UserServiceImpl implements UserService {
     }
 
     private User dtoToUser(UserDto userDto) {
-        //User user= this.modelMapper.map(userDto, User.class);
-        //return user;
+        User user= this.modelMapper.map(userDto, User.class);
         // modelMapper is use for to convert one class object to another thats wht i commented all this code
         //key- from  Value- TO
-        User user= new User();
+  /*      User user= new User();
         user.setId(userDto.getId());
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setAbout(userDto.getAbout());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(userDto.getPassword());*/
         return user;
     }
     private UserDto userToDto(User user) {
-        //	UserDto userDto= this.modelMapper.map(user, UserDto.class);
-        //return userDto;
-        UserDto userDto= new UserDto();
-        userDto.setId(user.getId());
-        userDto.setName(user.getName());
-        userDto.setEmail(user.getEmail());
-        userDto.setPassword(user.getPassword());
-        userDto.setAbout(user.getAbout());
+        UserDto userDto= this.modelMapper.map(user, UserDto.class);
+//        UserDto userDto= new UserDto();
+//        userDto.setId(user.getId());
+//        userDto.setName(user.getName());
+//        userDto.setEmail(user.getEmail());
+//        userDto.setPassword(user.getPassword());
+//        userDto.setAbout(user.getAbout());
         return userDto;
     }
 }
