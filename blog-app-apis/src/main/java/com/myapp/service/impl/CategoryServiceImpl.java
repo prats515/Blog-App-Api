@@ -7,11 +7,14 @@ import com.myapp.repositories.CategoryRepo;
 import com.myapp.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class CategoryServiceImpl implements CategoryService {
+
 
     @Autowired
     private CategoryRepo categoryRepo;
@@ -30,7 +33,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto updateCategory(CategoryDto categoryDto, Integer categoryId) {
-        Category cat= this.categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("category","CategoryId", categoryId));
+        Category cat= this.categoryRepo.findById(categoryId).orElseThrow(()->
+        new ResourceNotFoundException("category","CategoryId", categoryId));
         cat.setCategoryTitle(categoryDto.getCategoryTitle());
         cat.setCategoryDescription(categoryDto.getCategoryDescription());
         Category updatedCat= this.categoryRepo.save(cat);
@@ -39,21 +43,23 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Integer categoryId) {
-        Category cat= this.categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("category", "CategoryId", categoryId));
+        Category cat= this.categoryRepo.findById(categoryId).orElseThrow(()->
+        new ResourceNotFoundException("category", "CategoryId", categoryId));
         this.categoryRepo.delete(cat);
     }
 
     @Override
     public CategoryDto getCategory(Integer categoryId) {
-        Category cat= this.categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("category", "CategoryId", categoryId));
-
+        Category cat= this.categoryRepo.findById(categoryId).orElseThrow(()->
+        new ResourceNotFoundException("category", "CategoryId", categoryId));
         return this.modelMapper.map(cat, CategoryDto.class);
     }
 
     @Override
     public List<CategoryDto> getCategories() {
         List<Category> categories=this.categoryRepo.findAll();
-        List<CategoryDto> categoryDtos= categories.stream().map((cat) -> this.modelMapper.map(categories, CategoryDto.class)).collect(Collectors.toList());
+        List<CategoryDto> categoryDtos= categories.stream().map((cat) -> this.modelMapper.map(cat, CategoryDto.class)).collect(Collectors.toList());
         return categoryDtos;
     }
 }
+
