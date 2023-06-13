@@ -28,8 +28,18 @@ public class PostController {
 
     public ResponseEntity<PostDto>updatePost(@RequestBody Integer postId,PostDto postDto, @PathVariable Integer userId,@PathVariable Integer categoryId){
         Post updatedPost=this.postService.updatePost(postDto, postId);
-
         return null;
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<List<PostDto>> getAllPost(){
+        List<PostDto> posts=this.postService.getAllPost();
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+    @GetMapping("/posts/{postId}")
+    public ResponseEntity<PostDto> getPostById(@RequestBody @PathVariable Integer postId){
+        PostDto postDto=this.postService.getPostById(postId);
+        return new ResponseEntity<>(postDto, HttpStatus.OK);
     }
 
     @GetMapping("/user/{userId}/posts")
