@@ -6,7 +6,7 @@ import com.myapp.payload.PostDto;
 import java.util.List;
 
 public interface PostService {
-    Post createPost(PostDto post);
+    PostDto createPost(PostDto post, Integer userId, Integer categoryId );
 
     Post updatePost(PostDto post, Integer postId);
 //delete post
@@ -16,9 +16,9 @@ public interface PostService {
 //get all post
     List<Post> getAllPost();
 //get all post by users
-    List<Post> getPostByUser(Integer userId);
+    List<PostDto> getPostByUser(Integer userId);
     //get all post by category
-    List<Post> getPostByCategory(Integer categoryId);
+    List<PostDto> getPostByCategory(Integer categoryId);
     //search by keywor
-    List<Post> getByKeyWord(String keyword);
+    List<Post> searchPost(String keyword);
 }
