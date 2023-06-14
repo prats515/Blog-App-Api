@@ -3,7 +3,10 @@ package com.myapp.controller;
 import com.myapp.entities.Category;
 import com.myapp.entities.Post;
 import com.myapp.entities.User;
+import com.myapp.exceptions.ResourceNotFoundException;
+import com.myapp.payload.ApiResponse;
 import com.myapp.payload.PostDto;
+import com.myapp.payload.PostResponse;
 import com.myapp.repositories.PostRepo;
 import com.myapp.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +29,17 @@ public class PostController {
         return new ResponseEntity<>(post, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<PostDto>updatePost(@RequestBody Integer postId,PostDto postDto, @PathVariable Integer userId,@PathVariable Integer categoryId){
-        Post updatedPost=this.postService.updatePost(postDto, postId);
-        return null;
+    @PutMapping("/posts/{postId}")
+    public ResponseEntity<PostDto>updatePost(@RequestBody PostDto postDto ,@PathVariable Integer postId){
+        PostDto updatedPost=this.postService.updatePost(postDto, postId);
+        return ResponseEntity.ok(updatedPost);
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDto>> getAllPost(){
-        List<PostDto> posts=this.postService.getAllPost();
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+    public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNumber", defaultValue = "0", required = false)Integer pageNumber,
+                                                   @RequestParam(value = "pageSize", defaultValue = "2", required = false) Integer pageSize ){
+        PostResponse allPosts=this.postService.getAllPost(pageSize, pageNumber);
+        return new ResponseEntity<PostResponse>(allPosts, HttpStatus.OK);
     }
     @GetMapping("/posts/{postId}")
     public ResponseEntity<PostDto> getPostById(@RequestBody @PathVariable Integer postId){
@@ -54,4 +59,9 @@ public class PostController {
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
+    @DeleteMapping("posts/{postId}")
+    public ResponseEntity<ApiResponse> deletePost(@PathVariable Integer postId){
+        this.postService.deletePost(postId);
+        return new ResponseEntity(new ApiResponse("Post Deleted Successfully",true), HttpStatus.OK);
+    }
 }
