@@ -15,11 +15,11 @@ public interface PostService {
 //get post by Id
     PostDto getPostById(Integer postId);
 //get all post
-    PostResponse getAllPost(Integer pageSize, Integer pageNumber);
+    PostResponse getAllPost(Integer pageSize, Integer pageNumber, String sortBy, String sortDir);
 //get all post by users
     List<PostDto> getPostByUser(Integer userId);
     //get all post by category
     List<PostDto> getPostByCategory(Integer categoryId);
     //search by keywor
-    List<Post> searchPost(String keyword);
+    List<PostDto> searchPost(String keyword);
 }
